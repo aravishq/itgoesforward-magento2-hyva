@@ -121,7 +121,9 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
             preSelectId: new URLSearchParams(location.search).get('id'),
             preSelectLabel: new URLSearchParams(location.search).get('size'),
             listCart(data) {
-                this.cartItems = data.cart.items;
+                if (data.cart.items) {
+                    this.cartItems = data.cart.items;
+                }
             },
             checkIGFProducts(data) {
                 this.selectedListing = false;
