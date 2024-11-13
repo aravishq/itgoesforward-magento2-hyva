@@ -1,0 +1,277 @@
+<?php
+
+use Magento\Catalog\Block\Product\View;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+
+/** @var Product $product */
+$product = $block->getProduct();
+
+$configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
+?>
+<div x-data="listingsApiComponent()"
+     @configurable-selection-changed.window="checkIGFProducts($event.detail)"
+     @attributes-loaded.window="fetchListings($event.detail)"
+     @private-content-loaded.window="listCart($event.detail.data)">
+    <template x-if="!loading && selectedListing">
+
+        <div class="mb-3">
+            <p class="mb-2 mt-6">
+                <strong>
+                    <?= __('Select purchase option') ?>
+                </strong>
+            </p>
+
+            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md"
+                 :class="{ 'disabled': maxQtyReached }">
+                <input id="default-radio-2"
+                       type="radio"
+                       name="igf"
+                       value="igf"
+                       x-model="select"
+                       class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
+                       :disabled="maxQtyReached"
+                       @change="toggleDiscountedPrice()">
+                <label
+                    for="default-radio-2"
+                    class="flex items-start w-full justify-center flex-col ml-2 font-normal text-gray-600"
+                >
+                    <span class="flex justify-between w-full">
+
+                        <span class="flex items-center label">
+                            <?= __('Return deal') ?>
+
+                            <div class="ml-2 has-tooltip flex items-center">
+                                <img
+                                    src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/tooltip.svg'); ?>"
+                                    width="16"
+                                    height="16"
+                                />
+
+                                <div class="tooltip invisible absolute rounded shadow-lg p-3 border-2 border-gray-300 bg-white ml-8">
+                                    <span class="font-bold"><?= __('What is a return deal?') ?></span>
+
+                                    <ul class="list-disc list-inside font-normal marker:mr-1">
+                                        <li><?= __('20% discount for a product which is in brand-new condition') ?></li>
+                                        <li><?= __('Up to 40% less CO₂ emissions') ?></li>
+                                        <li><?= __('Anonymous shipping label') ?></li>
+                                    </ul>
+
+                                    <span class="mt-4 underline">
+                                        <a href="<?= $escaper->escapeUrl($configValue) ?>" target="_blank">
+                                            <?= __('Powered by It Goes Forward') ?>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </span>
+
+                        <template x-if="selectedListing.discountPercentage > 0">
+                            <span class="text-igf-green"
+                                  x-text="`<?= __('Save ') ?>${selectedListing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                            </span>
+                        </template>
+
+                        <template x-if="selectedListing.discountPercentage === 0">
+                            <span class="text-igf-green">
+                                <?= __('Reduce CO₂') ?>
+                            </span>
+                        </template>
+                    </span>
+
+                    <span class="text-gray-500 label text-sm">
+                        <?= __('Sent directly from another customer') ?>
+                    </span>
+                </label>
+            </div>
+
+            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
+                <input id="default-radio-1"
+                       type="radio"
+                       name="igf"
+                       value="warehouse"
+                       x-model="select"
+                       class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
+                       @change="toggleDiscountedPrice()">
+                <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
+                    <span class="label"><?= __('Shipped from our warehouse') ?></span>
+                </label>
+            </div>
+        </div>
+    </template>
+
+    <?= $block->getChildHtml('product.info.addtocart.inner') ?>
+
+</div>
+
+
+<script>
+    function listingsApiComponent() {
+        return {
+            loading: false,
+            selectedListing: false,
+            cartItems: [],
+            listings: [],
+            attributeData: null,
+            select: null,
+            maxQtyReached: null,
+            preSelectId: new URLSearchParams(location.search).get('id'),
+            preSelectLabel: new URLSearchParams(location.search).get('size'),
+            listCart(data) {
+                if (data.cart.items) {
+                    this.cartItems = data.cart.items;
+                }
+            },
+            checkIGFProducts(data) {
+                this.selectedListing = false;
+                this.select = null;
+
+                this.$nextTick(() => {
+                    this.setItGoesForwardLabel();
+                });
+
+                if (!data?.productIndex) {
+                    return;
+                }
+
+                const listing = this.listings.find(listing => listing.productId === data.productIndex);
+
+                if (listing) {
+                    this.selectedListing = listing;
+                    this.setMaxQtyReached();
+                }
+            },
+            getAvailableProductIds(data) {
+                let productIds = [];
+
+                data.attributeOptions.forEach((item, index) => {
+                    if (!Array.isArray(item)) return;
+
+                    item.forEach(subItem => {
+                        if (!subItem.products) return;
+
+                        subItem.products.forEach(productId => {
+                            if (productIds.includes(productId)) return;
+
+                            productIds.push(productId);
+                        });
+                    });
+                });
+
+                return productIds;
+            },
+            fetchListings(attributeData) {
+                this.loading = true;
+                this.attributeData = attributeData;
+                const productIds = this.getAvailableProductIds(attributeData);
+                const productIdsString = productIds.join(',');
+
+                // Fetch listings for all product ids
+                const apiUrl = '<?= $block->getUrl('rest/V1/itgoesforward/listings/product/') ?>' + productIdsString;
+
+                fetch(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.listings = data;
+                        this.setItGoesForwardLabel();
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                        this.setPreselectedOption();
+                    });
+            },
+            setPreselectedOption() {
+                if (this.preSelectId && this.preSelectLabel) {
+                    this.selectedListing = this.listings.find(listing => listing.productId === this.preSelectId);
+
+                    const configurableDropdown = document.querySelector('[x-ref="configurable"]');
+                    configurableDropdown.value = this.preSelectLabel;
+                }
+            },
+            setItGoesForwardLabel() {
+                this.attributeData?.attributeOptions.forEach((item, index) => {
+                    if (!Array.isArray(item)) return;
+
+                    item.forEach(subItem => {
+                        if (!subItem.products) return;
+
+                        subItem.products.forEach(productId => {
+                            if (this.listings.some(listing => listing.productId === productId)) {
+                                const selectElement = document.getElementById('attribute' + index);
+                                const optionElement = selectElement.querySelector('option[value="' + subItem.id + '"]');
+
+                                if (!optionElement.textContent.includes('Return Deal')) {
+                                    optionElement.textContent = optionElement.textContent + '  (Return Deal)';
+                                }
+
+                                if (subItem.id === this.preSelectLabel) {
+                                    optionElement.selected = true;
+                                }
+                            }
+                        });
+                    });
+                });
+            },
+            addToCartIGF() {
+                const productFormElement = document.getElementById('product_addtocart_form');
+                const itGoesForwardInput = document.createElement('input');
+                const addToCartButtonElement = document.getElementById('product-addtocart-button');
+                itGoesForwardInput.type = 'hidden';
+                itGoesForwardInput.name = 'it_goes_forward';
+                itGoesForwardInput.value = this.selectedListing.id;
+                productFormElement.appendChild(itGoesForwardInput);
+                addToCartButtonElement.click();
+
+                // Remove the input after the form is submitted
+                productFormElement.removeChild(itGoesForwardInput);
+            },
+            setMaxQtyReached() {
+                const item = this.cartItems.find(item => item.product_sku === this.selectedListing.sku && item.it_goes_forward);
+                this.maxQtyReached = item ? true : false;
+                if (this.maxQtyReached) {
+                    this.select = 'warehouse';
+                }
+            },
+            toggleDiscountedPrice() {
+                const priceWrapper = document.querySelector('.price-wrapper');
+                const priceElement = document.querySelector('.price-wrapper .price');
+
+                if (this.select === 'igf') {
+                    if (priceWrapper && priceElement && this.selectedListing.discountPercentage > 0) {
+                        priceElement.style.textDecoration = "line-through";
+
+                        const newPrice = document.createElement("SPAN");
+                        newPrice.id = "new-price";
+                        newPrice.innerHTML = '<span class="ml-2 font-bold">New Price </span><span class="text-igf-green ml-2">' + this.selectedListing.discountPercentage + '% off</span>';
+                        priceWrapper.appendChild(newPrice);
+                    }
+                } else {
+                    if (priceWrapper && priceElement) {
+                        priceElement.style.textDecoration = "none";
+
+                        const newPrice = document.querySelector('#new-price');
+                        if (newPrice) {
+                            newPrice.remove();
+                        }
+                    }
+                }
+            },
+        }
+    }
+</script>

@@ -2,10 +2,15 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="product.info">
-            <referenceBlock name="product.itgoesforward.listing"
-                   template="Alpaca_ItGoesForwardHyva::product/listing.phtml"
-            />
+        <referenceBlock name="product.info.addtocart">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Alpaca_ItGoesForwardHyva::product/view/listing.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceBlock name="product.info.addtocart">
+            <block name="product.info.addtocart.inner"
+                   template="Alpaca_ItGoesForwardHyva::product/view/addtocart.phtml"/>
         </referenceBlock>
     </body>
 </page>
