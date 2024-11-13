@@ -1,0 +1,189 @@
+<?php
+declare(strict_types=1);
+
+use Alpaca\ItGoesForwardHyva\Block\Product\List\IGFListProduct;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Escaper;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\Model\ViewModelRegistry;
+
+/** @var IGFListProduct $block */
+/** @var Product $product */
+/** @var ConfigurableType $configurableType */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var HeroiconsOutline $heroicons */
+
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+$configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
+
+$product = $block->getData('product');
+$associatedSizes = $block->getAssociatedSizes($product);
+?>
+
+<?php if (!empty($associatedSizes)): ?>
+    <div x-data='initListings(<?= json_encode($associatedSizes)?>)'>
+        <template x-if="!loading && listings.length > 0">
+            <div class="has-tooltip flex items-center -mt-3 text-xxs lg:text-base">
+                <div class="flex items-center gap-2 cursor-pointer">
+                    <img src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/sustainability.svg'); ?>"
+                         width="16"
+                         height="16"
+                    />
+                    <p class="text-igf-green font-normal" @click="slideOut = window.innerWidth <= 750 ? true : false">
+                        <?= $escaper->escapeHtml(__('Return deal')) ?>
+                    </p>
+                </div>
+
+                <!-- Desktop Tooltip -->
+                <div class='hidden lg:flex tooltip invisible flex-col gap-2 absolute rounded left-full w-80 shadow-lg
+                            p-3 border-2 border-gray-200 bg-white ml-4'>
+                    <span class="font-bold">
+                        <?= __('Save money with a return deal') ?>
+                    </span>
+                    <div class="border-2 border-gray-200 rounded-lg text-igf-grey text-xxs lg:text-sm">
+                        <p class="px-2 py-1 border-b"><?= __('Available return deals') ?></p>
+                        <ul class="font-normal w-full">
+                            <template x-for="listing in listings">
+                                <a x-bind:href=`<?= $escaper->escapeUrl($product->getProductUrl()) ?>?id=${listing.productId}&size=${associatedProducts[listing.productId].value}`>
+                                    <li class="px-2 py-1 flex justify-between cursor-pointer hover:bg-gray-100">
+                                        <p>
+                                            <?= __("Size") ?>
+                                            <span x-text="associatedProducts[listing.productId].label"></span>
+                                        </p>
+                                        <template x-if="listing.discountPercentage > 0">
+                                            <span class="text-igf-green"
+                                                  x-text="`<?= __('Save ') ?>${listing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                                            </span>
+                                        </template>
+                                        <template x-if="listing.discountPercentage === 0">
+                                             <span class="text-igf-green">
+                                                 <?= __('Reduce CO₂') ?>
+                                             </span>
+                                        </template>
+                                    </li>
+                                </a>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <span class="underline text-igf-grey">
+                        <a href="<?= $escaper->escapeUrl($configValue) ?>"
+                           target="_blank"><?= __('Powered by It Goes Forward') ?>
+                        </a>
+                    </span>
+                </div>
+
+                <!-- Mobile Slideout -->
+                <div class="fixed block lg:hidden top-0 z-30 left-0 w-full h-full bg-black bg-opacity-25"
+                     x-show="slideOut"
+                     x-cloak
+                     x-transition:enter="ease-in-out duration-500"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     x-transition:leave="ease-in-out duration-500"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     role="button"
+                     @click="slideOut = false"
+                     aria-label="<?= $escaper->escapeHtmlAttr(__('Close listing')) ?>"></div>
+
+                <div x-show="slideOut"
+                     x-cloak
+                     class="fixed bottom-0 w-full left-0 flex lg:hidden flex-col gap-2 rounded shadow-lg z-40 bg-white text-base px-4 py-6"
+                     x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                     x-transition:enter-start="translate-y-full"
+                     x-transition:enter-end="translate-y-0"
+                     x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                     x-transition:leave-start="translate-y-0"
+                     x-transition:leave-end="translate-y-full"
+                     @click.outside="slideOut = false">
+                    <div>
+                        <span class="font-bold"><?= __('Save money with a return deal') ?></span>
+                        <button
+                            type="button"
+                            @click="slideOut = false"
+                            class="absolute top-0 right-2 p-4 mt-2 text-gray-300 transition-colors hover:text-black">
+                            <?= $heroicons->xHtml('', 24, 24, ['aria-hidden' => 'true']); ?>
+                        </button>
+                    </div>
+
+                    <div class="border-2 border-gray-200 rounded-lg text-igf-grey">
+                        <p class="px-2 py-1 border-b"><?= __('Available return deals') ?></p>
+                        <ul class="font-normal w-full">
+                            <template x-for="listing in listings">
+                                <a x-bind:href=`<?= $escaper->escapeUrl($product->getProductUrl()) ?>?id=${listing.productId}&size=${associatedProducts[listing.productId].value}`>
+                                    <li class="px-2 py-1 flex justify-between cursor-pointer">
+                                        <p>
+                                            <?= __('Size') ?>
+                                            <span x-text="associatedProducts[listing.productId].label"></span>
+                                        </p>
+                                        <template x-if="listing.discountPercentage > 0">
+                                            <span class="text-igf-green"
+                                                  x-text="`<?= __('Save ') ?>${listing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                                            </span>
+                                        </template>
+                                        <template x-if="listing.discountPercentage === 0">
+                                             <span class="text-igf-green">
+                                                 <?= __('Reduce CO₂') ?>
+                                             </span>
+                                        </template>
+                                    </li>
+                                </a>
+                            </template>
+                        </ul>
+                    </div>
+
+                    <span class="underline text-igf-grey">
+                        <a href="<?= $escaper->escapeUrl($configValue) ?>"
+                           target="_blank"><?= __('Powered by It Goes Forward') ?>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </template>
+    </div>
+<?php endif; ?>
+
+<script>
+    function initListings(products) {
+        return {
+            loading: false,
+            listings: [],
+            slideOut: false,
+            associatedProducts: products,
+            init() {
+                this.fetchListings(products);
+            },
+            fetchListings(products) {
+                this.loading = true;
+                const idString = Object.keys(products).join(',');
+
+                const apiUrl = '<?= $block->getUrl('rest/V1/itgoesforward/listings/product/') ?>' + idString;
+
+                fetch(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.listings = data;
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            }
+        }
+    }
+</script>

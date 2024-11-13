@@ -1,0 +1,52 @@
+<?php
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Hyva\Theme\ViewModel\ProductPage;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsOutline $heroicons */
+$heroicons = $viewModels->require(HeroiconsOutline::class);
+
+/** @var ProductPage $productViewModel */
+$productViewModel = $viewModels->require(ProductPage::class);
+$product = $productViewModel->getProduct();
+?>
+<div x-show="select !== 'igf' || !selectedListing">
+    <button type="submit"
+            form="product_addtocart_form"
+            title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
+            class="w-full btn-primary p-4 rounded-none flex justify-center bg-green text-base shadow-none hover:opacity-80 hover:bg-green transition-opacity duration-1000"
+            id="product-addtocart-button"
+            x-bind="eventListeners"
+            :disabled="!select && selectedListing"
+            @click="addToCart(event, <?= $product->getId() ?>, '<?= $product->getName() ?>');"
+    >
+        <span class="uppercase text-md font-bold"><?= $block->getData('is_cart_configure') ?
+                $escaper->escapeHtml(__('Update item')) :
+                $escaper->escapeHtml(__('Add to Cart')) ?>
+        </span>
+    </button>
+</div>
+
+<div x-show="select === 'igf' && selectedListing">
+    <button type="submit"
+            title="<?= $escaper->escapeHtml(__('Add Forward to Cart')) ?>"
+            class="w-full btn-primary p-4 bg-green text-base flex justify-center hover:opacity-80 hover:bg-green transition-opacity duration-1000"
+            id="product-addtocart-button-igf"
+            @click="addToCartIGF();"
+            :disabled="maxQtyReached">
+    <span class="uppercase text-md font-bold flex items-center gap-4">
+        <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+    </span>
+    </button>
+</div>
+
+
+<?= $block->getChildHtml('', true) ?>

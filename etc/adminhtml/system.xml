@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="it_goes_forward_hyva" sortOrder="1000" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+            <label>It Goes Forward Hyva</label>
+            <tab>service</tab>
+            <resource>Alpaca_ItGoesForwardHyva::config_alpaca_itgoesforward_hyva</resource>
+            <group id="frontend" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                <label>Frontend configuration</label>
+                <field id="link_url" type="text" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                    <label>Tooltip link URL</label>
+                    <comment>Absolute URL used for the tooltip link.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

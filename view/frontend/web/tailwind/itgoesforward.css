@@ -1,0 +1,45 @@
+input[type="radio"]:checked ~ label .label {
+  font-weight: 600;
+}
+
+.radio-card.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.radio-card:has(:checked) {
+  outline-width: 2px;
+  outline-color: #1B2D18;
+}
+
+.tooltip::after {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  border-top-color: transparent;
+  --tw-border-opacity: 1;
+  border-right-color: rgb(209 213 219 / var(--tw-border-opacity));
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  content: "";
+}
+
+.has-tooltip:hover .tooltip,
+.tooltip:hover {
+  visibility: visible;
+  z-index: 50;
+}
+
+#product-addtocart-button:disabled,
+#product-addtocart-button-igf:disabled {
+  opacity: 0.5;
+}
+
+.text-igf-grey {
+  color: #575757;
+}
