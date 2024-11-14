@@ -242,7 +242,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                 productFormElement.removeChild(itGoesForwardInput);
             },
             setMaxQtyReached() {
-                const item = this.cartItems.find(item => item.product_sku === this.selectedListing.sku && item.it_goes_forward);
+                const item = this.cartItems.find(item => item.simple_id === this.selectedListing.productId && item.it_goes_forward);
                 this.maxQtyReached = item ? true : false;
                 if (this.maxQtyReached) {
                     this.select = 'warehouse';
