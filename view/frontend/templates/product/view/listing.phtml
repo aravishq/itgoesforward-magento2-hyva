@@ -128,6 +128,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
             checkIGFProducts(data) {
                 this.selectedListing = false;
                 this.select = null;
+                this.toggleDiscountedPrice();
 
                 this.$nextTick(() => {
                     this.setItGoesForwardLabel();
@@ -200,8 +201,17 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                 if (this.preSelectId && this.preSelectLabel) {
                     this.selectedListing = this.listings.find(listing => listing.productId === this.preSelectId);
 
-                    const configurableDropdown = document.querySelector('[x-ref="configurable"]');
-                    configurableDropdown.value = this.preSelectLabel;
+                    window.dispatchEvent(
+                        new CustomEvent(
+                            'pre-select-option',
+                            {
+                                detail: {
+                                    attributeId: 141,
+                                    value: this.preSelectLabel,
+                                }
+                            }
+                        )
+                    );
                 }
             },
             setItGoesForwardLabel() {
@@ -218,10 +228,6 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
 
                                 if (!optionElement.textContent.includes('Return Deal')) {
                                     optionElement.textContent = optionElement.textContent + '  (Return Deal)';
-                                }
-
-                                if (subItem.id === this.preSelectLabel) {
-                                    optionElement.selected = true;
                                 }
                             }
                         });
