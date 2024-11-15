@@ -6,7 +6,7 @@ namespace Alpaca\ItGoesForwardHyva\Plugin\Checkout\CustomerData;
 use Magento\Checkout\CustomerData\AbstractItem;
 use Magento\Quote\Model\Quote\Item;
 
-class DefaultItem
+class DefaultItemPlugin
 {
     /**
      * @param AbstractItem $subject

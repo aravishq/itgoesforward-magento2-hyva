@@ -32,16 +32,16 @@ class IGFListProduct extends Template
             return [];
         }
 
-        $childProducts = $this->configurableProduct->getUsedProducts($product);
+        $simpleProducts = $this->configurableProduct->getUsedProducts($product);
 
         $sizes = [];
-        foreach ($childProducts as $child) {
-            $label = $child->getAttributeText('size');
-            $value = $child->getData('size');
+        foreach ($simpleProducts as $simple) {
+            $label = $simple->getAttributeText('size');
+            $value = $simple->getData('size');
 
             if ($label) {
-                $sizes[$child->getId()]['label'] = $label;
-                $sizes[$child->getId()]['value'] = $value;
+                $sizes[$simple->getId()]['label'] = $label;
+                $sizes[$simple->getId()]['value'] = $value;
             }
         }
         return $sizes;
