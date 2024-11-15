@@ -20,6 +20,15 @@ input[type="radio"]:checked ~ label .label {
     @apply visible z-50;
 }
 
+.product-item:nth-child(3n + 3) .tooltip {
+    @apply left-auto right-0 ml-auto;
+    margin-right: 7.5rem;
+}
+
+.product-item:nth-child(3n + 3) .tooltip::after {
+    @apply left-full border-t-transparent border-r-transparent border-b-transparent border-l-gray-300;
+}
+
 #product-addtocart-button:disabled,
 #product-addtocart-button-igf:disabled {
     @apply opacity-50;

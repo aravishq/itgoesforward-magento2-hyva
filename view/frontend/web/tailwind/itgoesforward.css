@@ -35,6 +35,22 @@ input[type="radio"]:checked ~ label .label {
   z-index: 50;
 }
 
+.product-item:nth-child(3n + 3) .tooltip {
+  left: auto;
+  right: 0px;
+  margin-left: auto;
+  margin-right: 7.5rem;
+}
+
+.product-item:nth-child(3n + 3) .tooltip::after {
+  left: 100%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  --tw-border-opacity: 1;
+  border-left-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
 #product-addtocart-button:disabled,
 #product-addtocart-button-igf:disabled {
   opacity: 0.5;

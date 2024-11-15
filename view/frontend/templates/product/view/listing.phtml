@@ -33,7 +33,6 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                        value="igf"
                        x-model="select"
                        class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
-                       :disabled="maxQtyReached"
                        @change="toggleDiscountedPrice()">
                 <label
                     for="default-radio-2"
