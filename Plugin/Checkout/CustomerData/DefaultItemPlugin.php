@@ -6,7 +6,7 @@ namespace Alpaca\ItGoesForwardHyva\Plugin\Checkout\CustomerData;
 use Magento\Checkout\CustomerData\AbstractItem;
 use Magento\Quote\Model\Quote\Item;
 
-class DefaultItem
+class DefaultItemPlugin
 {
     /**
      * @param AbstractItem $subject
@@ -23,11 +23,13 @@ class DefaultItem
         $data = $proceed($item);
 
         $igf = $item->getProduct()->getCustomOption('it_goes_forward');
+        $simple_id = $item->getOptionByCode('simple_product')->getProduct()->getId();
 
         $result = [];
 
         if ($igf && $igf->getValue()) {
             $result['it_goes_forward'] = $igf->getValue();
+            $result['simple_id'] = $simple_id;
         }
 
         return \array_merge(
