@@ -29,6 +29,16 @@ input[type="radio"]:checked ~ label .label {
   content: "";
 }
 
+.has-tooltip {
+  background-color: #ECF8F185;
+}
+
+@media (min-width: 1024px) {
+  .has-tooltip {
+    background-color: transparent;
+  }
+}
+
 .has-tooltip:hover .tooltip,
 .tooltip:hover {
   visibility: visible;
