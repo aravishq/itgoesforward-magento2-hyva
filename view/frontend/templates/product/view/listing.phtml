@@ -43,7 +43,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                         <span class="flex items-center label">
                             <?= __('Return deal') ?>
 
-                            <div class="ml-2 has-tooltip flex items-center">
+                            <div class="ml-2 has-tooltip flex items-center cursor-pointer">
                                 <img
                                     src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/tooltip.svg'); ?>"
                                     width="16"
@@ -87,7 +87,8 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                 </label>
             </div>
 
-            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
+            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md"
+                 :class="{ 'disabled': outOfStock }">
                 <input id="default-radio-1"
                        type="radio"
                        name="igf"
@@ -117,6 +118,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
             attributeData: null,
             select: null,
             maxQtyReached: null,
+            outOfStock: null,
             preSelectId: new URLSearchParams(location.search).get('id'),
             preSelectLabel: new URLSearchParams(location.search).get('size'),
             listCart(data) {
@@ -125,6 +127,8 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                 }
             },
             checkIGFProducts(data) {
+                console.log(data);
+
                 this.selectedListing = false;
                 this.select = null;
                 this.toggleDiscountedPrice();
@@ -135,6 +139,10 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
 
                 if (!data?.productIndex) {
                     return;
+                }
+
+                if (data.outOfStock) {
+                    this.outOfStock = true;
                 }
 
                 const listing = this.listings.find(listing => listing.productId === data.productIndex);
