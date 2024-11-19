@@ -64,7 +64,8 @@ $associatedSizes = $block->getAssociatedSizes($product);
                                                      <?= __('Reduce CO₂') ?>
                                                  </span>
                                             </template>
-                                            <span class="w-24 inline-block font-bold pl-4 text-black"><?= $escaper->escapeHtml(__('View Item')) ?>
+                                            <span class="w-24 font-bold pl-4 text-black align-right flex justify-end items-center gap-x-1">
+                                                <?= $escaper->escapeHtml(__('View Item')) ?>
                                                 <img src="<?= $block->getViewFileUrl('Alpaca_ItGoesForwardHyva::svg/arrow-right.svg'); ?>"
                                                      width="8"
                                                      height="8"
