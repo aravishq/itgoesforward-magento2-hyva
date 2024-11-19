@@ -43,11 +43,12 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                         <span class="flex items-center label">
                             <?= __('Return deal') ?>
 
-                            <div class="ml-2 has-tooltip flex items-center cursor-pointer">
+                            <div class="ml-2 has-tooltip flex items-center">
                                 <img
                                     src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/tooltip.svg'); ?>"
                                     width="16"
                                     height="16"
+                                    class="cursor-pointer"
                                 />
 
                                 <div class="tooltip invisible absolute rounded shadow-lg p-3 border-2 border-gray-300 bg-white ml-8">
