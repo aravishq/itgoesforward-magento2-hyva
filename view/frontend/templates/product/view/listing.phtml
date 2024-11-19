@@ -43,7 +43,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                         <span class="flex items-center label">
                             <?= __('Return deal') ?>
 
-                            <div class="ml-2 has-tooltip flex items-center">
+                            <div class="ml-2 has-tooltip flex items-center cursor-pointer">
                                 <img
                                     src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/tooltip.svg'); ?>"
                                     width="16"
@@ -54,7 +54,11 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
                                     <span class="font-bold"><?= __('What is a return deal?') ?></span>
 
                                     <ul class="list-disc list-inside font-normal marker:mr-1">
-                                        <li><?= __('20% discount for a product which is in brand-new condition') ?></li>
+                                        <template x-if="selectedListing.discountPercentage > 0">
+                                            <li x-init="templateText = '<?= __('%1 discount for a product which is in brand-new condition') ?>';"
+                                                x-text="templateText.replace('%1', selectedListing.discountPercentage + '%')">
+                                            </li>
+                                        </template>
                                         <li><?= __('Up to 40% less CO₂ emissions') ?></li>
                                         <li><?= __('Anonymous shipping label') ?></li>
                                     </ul>
@@ -70,7 +74,8 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
 
                         <template x-if="selectedListing.discountPercentage > 0">
                             <span class="text-igf-green"
-                                  x-text="`<?= __('Save ') ?>${selectedListing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                                  x-init="templateText = '<?= __('Save %1 and reduce CO₂') ?>';"
+                                  x-text="templateText.replace('%1', selectedListing.discountPercentage + '%')">
                             </span>
                         </template>
 

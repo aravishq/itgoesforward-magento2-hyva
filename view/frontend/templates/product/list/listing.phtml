@@ -55,7 +55,8 @@ $associatedSizes = $block->getAssociatedSizes($product);
                                         <div class="flex group-hover:-translate-x-0 translate-x-24 transition-transform duration-500">
                                             <template x-if="listing.discountPercentage > 0">
                                                 <span class="text-igf-green"
-                                                      x-text="`<?= __('Save ') ?>${listing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                                                      x-init="templateText = '<?= __('Save %1 and reduce CO₂') ?>';"
+                                                      x-text="templateText.replace('%1', listing.discountPercentage + '%')">
                                                 </span>
                                             </template>
                                             <template x-if="listing.discountPercentage === 0">
@@ -130,7 +131,8 @@ $associatedSizes = $block->getAssociatedSizes($product);
                                         </p>
                                         <template x-if="listing.discountPercentage > 0">
                                             <span class="text-igf-green"
-                                                  x-text="`<?= __('Save ') ?>${listing.discountPercentage}% <?= __('and reduce CO₂') ?>`">
+                                                  x-init="templateText = '<?= __('Save %1 and reduce CO₂') ?>';"
+                                                  x-text="templateText.replace('%1', listing.discountPercentage + '%')">
                                             </span>
                                         </template>
                                         <template x-if="listing.discountPercentage === 0">
