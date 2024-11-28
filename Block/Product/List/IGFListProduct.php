@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Alpaca\ItGoesForwardHyva\Block\Product\List;
+namespace Aravis\ItGoesForwardHyva\Block\Product\List;
 
 use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;

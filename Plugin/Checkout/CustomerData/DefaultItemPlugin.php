@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Alpaca\ItGoesForwardHyva\Plugin\Checkout\CustomerData;
+namespace Aravis\ItGoesForwardHyva\Plugin\Checkout\CustomerData;
 
 use Magento\Checkout\CustomerData\AbstractItem;
 use Magento\Quote\Model\Quote\Item;

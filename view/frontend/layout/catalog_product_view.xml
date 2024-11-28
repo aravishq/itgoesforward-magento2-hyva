@@ -4,13 +4,13 @@
     <body>
         <referenceBlock name="product.info.addtocart">
             <action method="setTemplate">
-                <argument name="template" xsi:type="string">Alpaca_ItGoesForwardHyva::product/view/listing.phtml</argument>
+                <argument name="template" xsi:type="string">Aravis_ItGoesForwardHyva::product/view/listing.phtml</argument>
             </action>
         </referenceBlock>
 
         <referenceBlock name="product.info.addtocart">
             <block name="product.info.addtocart.inner"
-                   template="Alpaca_ItGoesForwardHyva::product/view/addtocart.phtml"/>
+                   template="Aravis_ItGoesForwardHyva::product/view/addtocart.phtml"/>
         </referenceBlock>
     </body>
 </page>

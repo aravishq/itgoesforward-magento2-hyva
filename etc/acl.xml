@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Alpaca_ItGoesForwardHyva::config_alpaca_itgoesforward_hyva" title="it_goes_forward_hyva"/>
+                            <resource id="Aravis_ItGoesForwardHyva::config_aravis_itgoesforward_hyva" title="it_goes_forward_hyva"/>
                         </resource>
                     </resource>
                 </resource>

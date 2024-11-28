@@ -5,7 +5,7 @@
         <section id="it_goes_forward_hyva" sortOrder="1000" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
             <label>It Goes Forward Hyva</label>
             <tab>service</tab>
-            <resource>Alpaca_ItGoesForwardHyva::config_alpaca_itgoesforward_hyva</resource>
+            <resource>Aravis_ItGoesForwardHyva::config_aravis_itgoesforward_hyva</resource>
             <group id="frontend" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
                 <label>Frontend configuration</label>
                 <field id="link_url" type="text" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">

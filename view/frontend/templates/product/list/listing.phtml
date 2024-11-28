@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Alpaca\ItGoesForwardHyva\Block\Product\List\IGFListProduct;
+use Aravis\ItGoesForwardHyva\Block\Product\List\IGFListProduct;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Escaper;
@@ -16,7 +16,7 @@ use Hyva\Theme\Model\ViewModelRegistry;
 /** @var HeroiconsOutline $heroicons */
 
 $heroicons = $viewModels->require(HeroiconsOutline::class);
-$configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
+$configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
 
 $product = $block->getData('product');
 $associatedSizes = $block->getAssociatedSizes($product);
@@ -28,7 +28,7 @@ $associatedSizes = $block->getAssociatedSizes($product);
             <div class="has-tooltip flex items-center -mt-12 mr-1 lg:mr-0 rounded-full lg:rounded-none px-2 py-0
                         lg:p-0 lg:-mt-3 text-sm lg:text-base">
                 <div class="flex items-center gap-2 cursor-pointer">
-                    <img src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/sustainability.svg'); ?>"
+                    <img src="<?= $block->getViewFileUrl('Aravis_ItGoesForward::svg/sustainability.svg'); ?>"
                          class="w-3 h-3 lg:w-4 lg:h-4"
                     />
                     <p class="text-igf-green font-normal" @click="slideOut = window.innerWidth <= 750 ? true : false">
@@ -66,7 +66,7 @@ $associatedSizes = $block->getAssociatedSizes($product);
                                             </template>
                                             <span class="w-24 font-bold pl-4 text-black align-right flex justify-end items-center gap-x-1">
                                                 <?= $escaper->escapeHtml(__('View Item')) ?>
-                                                <img src="<?= $block->getViewFileUrl('Alpaca_ItGoesForwardHyva::svg/arrow-right.svg'); ?>"
+                                                <img src="<?= $block->getViewFileUrl('Aravis_ItGoesForwardHyva::svg/arrow-right.svg'); ?>"
                                                      width="8"
                                                      height="8"
                                                      class="inline-block"

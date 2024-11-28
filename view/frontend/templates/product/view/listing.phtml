@@ -10,7 +10,7 @@ use Magento\Framework\Escaper;
 /** @var Product $product */
 $product = $block->getProduct();
 
-$configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
+$configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig('it_goes_forward_hyva/frontend/link_url');
 ?>
 <div x-data="listingsApiComponent()"
      @configurable-selection-changed.window="checkIGFProducts($event.detail)"
@@ -45,7 +45,7 @@ $configValue = $this->helper('Alpaca\ItGoesForwardHyva\Helper\Data')->getConfig(
 
                             <div class="ml-2 has-tooltip flex items-center">
                                 <img
-                                    src="<?= $block->getViewFileUrl('Alpaca_ItGoesForward::svg/tooltip.svg'); ?>"
+                                    src="<?= $block->getViewFileUrl('Aravis_ItGoesForward::svg/tooltip.svg'); ?>"
                                     width="16"
                                     height="16"
                                     class="cursor-pointer"

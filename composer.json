@@ -1,11 +1,11 @@
 {
-  "name": "alpacash/itgoesforward-magento2-hyva",
+  "name": "aravis/itgoesforward-magento2-hyva",
   "description": "Magento 2 Hyva frontend integration for ItGoesForward",
+  "type": "magento2-module",
   "require": {
     "php": ">=7.4",
-    "alpacash/itgoesforward-magento2": "^1.0"
+    "aravis/itgoesforward-magento2": "^1.0"
   },
-  "type": "magento2-module",
   "license": [
     "MIT"
   ],
@@ -14,7 +14,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "Alpaca\\ItGoesForwardHyva\\": ""
+      "Aravis\\ItGoesForwardHyva\\": ""
     }
   }
 }

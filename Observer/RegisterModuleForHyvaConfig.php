@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Alpaca\ItGoesForwardHyva\Observer;
+namespace Aravis\ItGoesForwardHyva\Observer;
 
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Event\Observer;

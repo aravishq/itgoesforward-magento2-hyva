@@ -4,8 +4,8 @@
     <body>
         <referenceBlock name="product_list_item">
             <block name="product.item.listing"
-                   template="Alpaca_ItGoesForwardHyva::product/list/listing.phtml"
-                   class="Alpaca\ItGoesForwardHyva\Block\Product\List\IGFListProduct"/>
+                   template="Aravis_ItGoesForwardHyva::product/list/listing.phtml"
+                   class="Aravis\ItGoesForwardHyva\Block\Product\List\IGFListProduct"/>
         </referenceBlock>
     </body>
 </page>

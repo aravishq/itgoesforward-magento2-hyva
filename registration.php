@@ -2,4 +2,4 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Alpaca_ItGoesForwardHyva', __DIR__);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Aravis_ItGoesForwardHyva', __DIR__);

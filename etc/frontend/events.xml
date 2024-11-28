@@ -2,6 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="hyva_config_generate_before">
-        <observer name="Alpaca_ItGoesForwardHyva" instance="Alpaca\ItGoesForwardHyva\Observer\RegisterModuleForHyvaConfig"/>
+        <observer name="Aravis_ItGoesForwardHyva" instance="Aravis\ItGoesForwardHyva\Observer\RegisterModuleForHyvaConfig"/>
     </event>
 </config>
