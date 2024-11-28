@@ -1,4 +1,5 @@
 <?php
+
 namespace Aravis\ItGoesForwardHyva\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -10,7 +11,7 @@ class Data extends AbstractHelper
      * @param string $config_path
      * @return string
      */
-    public function getConfig($config_path) : string
+    public function getConfig($config_path): ?string
     {
         return $this->scopeConfig->getValue(
             $config_path,
