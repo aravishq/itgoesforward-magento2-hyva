@@ -187,7 +187,12 @@ $associatedSizes = $block->getAssociatedSizes($product);
                         return response.json();
                     })
                     .then(data => {
-                        this.listings = data;
+                        this.listings = data.reduce((listingsByProductId, listing) => {
+                            if (!listingsByProductId.some(item => item.productId === listing.productId)) {
+                                listingsByProductId.push(listing);
+                            }
+                            return listingsByProductId;
+                        }, []);
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation:', error);
