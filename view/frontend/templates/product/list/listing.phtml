@@ -46,7 +46,9 @@ $associatedSizes = $block->getAssociatedSizes($product);
                         <p class="px-2 py-1 border-b"><?= __('Available return deals') ?></p>
                         <ul class="font-normal w-full">
                             <template x-for="listing in listings">
-                                <a x-bind:href=`<?= $escaper->escapeUrl($product->getProductUrl()) ?>?id=${listing.productId}&size=${associatedProducts[listing.productId].value}`>
+                                <a x-bind:href="'<?= $escaper->escapeUrl($product->getProductUrl()) ?>' +
+                                    '?id=' + listing.productId +
+                                    '&size=' + associatedProducts[listing.productId].value">
                                     <li class="px-2 py-1 flex justify-between cursor-pointer group overflow-hidden">
                                         <p>
                                             <?= __("Size") ?>
@@ -102,7 +104,8 @@ $associatedSizes = $block->getAssociatedSizes($product);
 
                 <div x-show="slideOut"
                      x-cloak
-                     class="fixed bottom-0 w-full left-0 flex lg:hidden flex-col gap-2 rounded shadow-lg z-40 bg-white text-base px-4 py-6"
+                     class="fixed bottom-0 w-full left-0 flex lg:hidden flex-col gap-2 rounded shadow-lg z-40 bg-white
+                            text-base px-4 py-6"
                      x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
                      x-transition:enter-start="translate-y-full"
                      x-transition:enter-end="translate-y-0"
@@ -124,7 +127,9 @@ $associatedSizes = $block->getAssociatedSizes($product);
                         <p class="px-2 py-1 border-b"><?= __('Available return deals') ?></p>
                         <ul class="font-normal w-full">
                             <template x-for="listing in listings">
-                                <a x-bind:href=`<?= $escaper->escapeUrl($product->getProductUrl()) ?>?id=${listing.productId}&size=${associatedProducts[listing.productId].value}`>
+                                <a x-bind:href="'<?= $escaper->escapeUrl($product->getProductUrl()) ?>' +
+                                   '?id=' + listing.productId +
+                                   '&size=' + associatedProducts[listing.productId].value">
                                     <li class="px-2 py-1 flex justify-between cursor-pointer">
                                         <p>
                                             <?= __('Size') ?>
@@ -187,7 +192,12 @@ $associatedSizes = $block->getAssociatedSizes($product);
                         return response.json();
                     })
                     .then(data => {
-                        this.listings = data;
+                        this.listings = data.reduce((listingsByProductId, listing) => {
+                            if (!listingsByProductId.some(item => item.productId === listing.productId)) {
+                                listingsByProductId.push(listing);
+                            }
+                            return listingsByProductId;
+                        }, []);
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation:', error);

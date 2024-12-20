@@ -35,7 +35,8 @@ $product = $productViewModel->getProduct();
     </button>
 </div>
 
-<div x-show="select === 'igf' && selectedListing">
+<div x-show="select === 'igf' && selectedListing"
+    x-cloak>
     <button type="submit"
             title="<?= $escaper->escapeHtml(__('Add Return Deal to Cart')) ?>"
             class="w-full btn-primary p-4 bg-green text-base flex justify-center hover:opacity-80 hover:bg-green transition-opacity duration-1000"
