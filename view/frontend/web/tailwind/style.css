@@ -11,7 +11,7 @@ input[type="radio"]:checked ~ label .label {
 }
 
 .tooltip::after {
-    @apply absolute top-1/2 right-full border-gray-300 border-[10px] -mt-[10px] border-solid border-t-transparent border-r-gray-300 border-b-transparent border-l-transparent;
+    @apply absolute right-0 bottom-2 mr-6 top-full border-gray-300 border-[10px] -translate-x-1/2 border-solid border-b-transparent border-r-transparent border-t-gray-300 border-l-transparent;
     content: "";
 }
 
@@ -21,17 +21,9 @@ input[type="radio"]:checked ~ label .label {
 }
 
 .has-tooltip:hover .tooltip,
+.has-tooltip:hover .tooltip::after,
 .tooltip:hover {
     @apply visible z-50;
-}
-
-.product-item:nth-child(3n + 3) .tooltip {
-    @apply left-auto right-0 ml-auto;
-    margin-right: 7.5rem;
-}
-
-.product-item:nth-child(3n + 3) .tooltip::after {
-    @apply left-full border-t-transparent border-r-transparent border-b-transparent border-l-gray-300;
 }
 
 #product-addtocart-button:disabled,
