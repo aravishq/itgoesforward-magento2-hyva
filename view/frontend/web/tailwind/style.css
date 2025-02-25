@@ -10,18 +10,26 @@ input[type="radio"]:checked ~ label .label {
     @apply outline-2 outline-[#1B2D18];
 }
 
-.tooltip::after {
-    @apply absolute right-0 bottom-2 mr-6 top-full border-gray-300 border-[10px] -translate-x-1/2 border-solid border-b-transparent border-r-transparent border-t-gray-300 border-l-transparent;
+.has-igf-tooltip .tooltip::after {
+    @apply absolute top-1/2 right-full border-gray-300 border-[10px] -mt-[10px] border-solid border-t-transparent
+           border-r-gray-300 border-b-transparent border-l-transparent;
     content: "";
 }
 
-.has-tooltip {
+.has-igf-tooltip .tooltip-list::after {
+    @apply absolute right-0 bottom-2 mr-6 top-full border-gray-300 border-[10px] -translate-x-1/2 border-solid
+           border-b-transparent border-r-transparent border-t-gray-300 border-l-transparent;
+    content: "";
+}
+
+.has-igf-tooltip {
     background-color: #ECF8F185;
     @apply lg:bg-transparent;
 }
 
-.has-tooltip:hover .tooltip,
-.has-tooltip:hover .tooltip::after,
+.has-igf-tooltip:hover .tooltip,
+.has-igf-tooltip:hover .tooltip-list,
+.has-igf-tooltip:hover .tooltip::after,
 .tooltip:hover {
     @apply visible z-50;
 }

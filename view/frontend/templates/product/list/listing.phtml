@@ -25,7 +25,7 @@ $associatedSizes = $block->getAssociatedSizes($product);
 <?php if (!empty($associatedSizes)): ?>
     <div x-data='initListings(<?= json_encode($associatedSizes)?>)'>
         <template x-if="!loading && listings.length > 0">
-            <div class="has-tooltip z-20 flex items-center -mt-12 mr-1 lg:mr-0 rounded-full lg:rounded-none px-2 py-0
+            <div class="has-igf-tooltip z-20 flex items-center -mt-12 mr-1 lg:mr-0 rounded-full lg:rounded-none px-2 py-0
                         lg:p-0 lg:pt-2 lg:-mt-3.5 text-sm lg:text-base lg:relative">
                 <div class="flex items-center gap-2 cursor-pointer">
                     <img src="<?= $block->getViewFileUrl('Aravis_ItGoesForward::svg/sustainability.svg'); ?>"
@@ -37,7 +37,7 @@ $associatedSizes = $block->getAssociatedSizes($product);
                 </div>
 
                 <!-- Desktop Tooltip -->
-                <div class='hidden lg:flex tooltip invisible flex-col gap-2 absolute rounded right-0 bottom-full w-96 shadow-lg
+                <div class='hidden lg:flex tooltip-list invisible flex-col gap-2 absolute rounded right-0 bottom-full w-96 shadow-lg
                             p-3 border-2 border-gray-200 bg-white'>
                     <span class="font-bold">
                         <?= __('Save money with a return deal') ?>
