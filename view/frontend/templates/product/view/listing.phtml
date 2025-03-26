@@ -269,7 +269,11 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
 
                         const newPrice = document.createElement("SPAN");
                         newPrice.id = "new-price";
-                        newPrice.innerHTML = '<span class="ml-2 font-bold">New Price </span><span class="text-igf-green ml-2">' + this.selectedListing.discountPercentage + '% off</span>';
+
+                        const newPriceFormatted = hyva.formatPrice(this.selectedListing.originalPrice - this.selectedListing.discountValue);
+                        newPrice.innerHTML = '<span class="ml-2 font-bold">' + newPriceFormatted + '</span>' +
+                            '<span class="text-igf-green ml-2">' + this.selectedListing.discountPercentage +
+                            '% off</span>';
                         priceWrapper.appendChild(newPrice);
                     }
                 } else {
