@@ -260,8 +260,8 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 }
             },
             toggleDiscountedPrice() {
-                const priceWrapper = document.querySelector('.price-wrapper');
-                const priceElement = document.querySelector('.price-wrapper .price');
+                const priceWrapper = document.querySelector('.product-info-main .price-wrapper');
+                const priceElement = document.querySelector('.product-info-main .price-wrapper .price')
 
                 if (this.select === 'igf') {
                     if (priceWrapper && priceElement && this.selectedListing.discountPercentage > 0) {
