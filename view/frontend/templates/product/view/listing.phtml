@@ -93,18 +93,21 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 </label>
             </div>
 
-            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
-                <input id="default-radio-1"
-                       type="radio"
-                       name="igf"
-                       value="warehouse"
-                       x-model="select"
-                       class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
-                       @change="toggleDiscountedPrice()">
-                <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
-                    <span class="label"><?= __('Shipped from our warehouse') ?></span>
-                </label>
-            </div>
+            <template x-if="salableProducts.includes(selectedListing.productId)">
+                <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
+                    <input id="default-radio-1"
+                           type="radio"
+                           name="igf"
+                           value="warehouse"
+                           x-model="select"
+                           class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
+                           @change="toggleDiscountedPrice()">
+                    <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
+                        <span class="label"><?= __('Shipped from our warehouse') ?></span>
+                    </label>
+                </div>
+            </template>
+
         </div>
     </template>
 
@@ -125,6 +128,10 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
             maxQtyReached: null,
             preSelectId: new URLSearchParams(location.search).get('id'),
             preSelectLabel: new URLSearchParams(location.search).get('size'),
+            salableProducts: [],
+            init() {
+                this.salableProducts = JSON.parse(sessionStorage.getItem("salableProducts")) || [];
+            },
             listCart(data) {
                 if (data.cart.items) {
                     this.cartItems = data.cart.items;
@@ -220,6 +227,8 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 }
             },
             setItGoesForwardLabel() {
+                let listingStorage = [];
+
                 this.attributeData?.attributeOptions.forEach((item, index) => {
                     if (!Array.isArray(item)) return;
 
@@ -234,10 +243,15 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                                 if (!optionElement.textContent.includes('Return Deal')) {
                                     optionElement.textContent = optionElement.textContent + '  - Return Deal';
                                 }
+
+                                let item = { attributeId: index, value: subItem.id };
+                                listingStorage.push(item);
                             }
                         });
                     });
                 });
+
+                sessionStorage.setItem('listings', JSON.stringify(listingStorage));
             },
             addToCartIGF() {
                 const productFormElement = document.getElementById('product_addtocart_form');
