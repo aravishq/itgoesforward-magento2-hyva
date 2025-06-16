@@ -156,6 +156,8 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                     this.selectedListing = listing;
                     this.setMaxQtyReached();
                 }
+
+                this.salableProducts = JSON.parse(sessionStorage.getItem("salableProducts")) || [];
             },
             getAvailableProductIds(data) {
                 let productIds = [];
@@ -267,7 +269,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 productFormElement.removeChild(itGoesForwardInput);
             },
             setMaxQtyReached() {
-                const item = this.cartItems.find(item => item.simple_id === this.selectedListing.productId && item.it_goes_forward);
+                const item = this.cartItems.find(item => item.product_sku === 'it-goes-forward' && this.selectedListing.id.toString() === item.it_goes_forward.toString());
                 this.maxQtyReached = item ? true : false;
                 if (this.maxQtyReached) {
                     this.select = 'warehouse';
