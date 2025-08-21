@@ -33,7 +33,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                        value="igf"
                        x-model="select"
                        class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
-                       @change="toggleDiscountedPrice()">
+                >
                 <label
                     for="default-radio-2"
                     class="flex items-start w-full justify-center flex-col ml-2 font-normal text-gray-600"
@@ -93,21 +93,18 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 </label>
             </div>
 
-            <template x-if="salableProducts.includes(selectedListing.productId)">
-                <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
-                    <input id="default-radio-1"
-                           type="radio"
-                           name="igf"
-                           value="warehouse"
-                           x-model="select"
-                           class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
-                           @change="toggleDiscountedPrice()">
-                    <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
-                        <span class="label"><?= __('Shipped from our warehouse') ?></span>
-                    </label>
-                </div>
-            </template>
-
+            <div class="flex items-center mb-3 py-2 px-3 radio-card outline-2 outline-gray-300 outline rounded-md">
+                <input id="default-radio-1"
+                       type="radio"
+                       name="igf"
+                       value="warehouse"
+                       x-model="select"
+                       class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
+                >
+                <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
+                    <span class="label"><?= __('Shipped from our warehouse') ?></span>
+                </label>
+            </div>
         </div>
     </template>
 
@@ -128,10 +125,6 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
             maxQtyReached: null,
             preSelectId: new URLSearchParams(location.search).get('id'),
             preSelectLabel: new URLSearchParams(location.search).get('size'),
-            salableProducts: [],
-            init() {
-                this.salableProducts = JSON.parse(sessionStorage.getItem("salableProducts")) || [];
-            },
             listCart(data) {
                 if (data.cart.items) {
                     this.cartItems = data.cart.items;
@@ -140,7 +133,6 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
             checkIGFProducts(data) {
                 this.selectedListing = false;
                 this.select = null;
-                this.toggleDiscountedPrice();
 
                 this.$nextTick(() => {
                     this.setItGoesForwardLabel();
@@ -156,8 +148,6 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                     this.selectedListing = listing;
                     this.setMaxQtyReached();
                 }
-
-                this.salableProducts = JSON.parse(sessionStorage.getItem("salableProducts")) || [];
             },
             getAvailableProductIds(data) {
                 let productIds = [];
@@ -229,8 +219,6 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 }
             },
             setItGoesForwardLabel() {
-                let listingStorage = [];
-
                 this.attributeData?.attributeOptions.forEach((item, index) => {
                     if (!Array.isArray(item)) return;
 
@@ -245,15 +233,10 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                                 if (!optionElement.textContent.includes('Return Deal')) {
                                     optionElement.textContent = optionElement.textContent + '  - Return Deal';
                                 }
-
-                                let item = { attributeId: index, value: subItem.id };
-                                listingStorage.push(item);
                             }
                         });
                     });
                 });
-
-                sessionStorage.setItem('listings', JSON.stringify(listingStorage));
             },
             addToCartIGF() {
                 const productFormElement = document.getElementById('product_addtocart_form');
@@ -269,7 +252,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 productFormElement.removeChild(itGoesForwardInput);
             },
             setMaxQtyReached() {
-                const item = this.cartItems.find(item => item.product_sku === 'it-goes-forward' && this.selectedListing.id.toString() === item.it_goes_forward.toString());
+                const item = this.cartItems.find(item => item.simple_id === this.selectedListing.productId && item.it_goes_forward);
                 this.maxQtyReached = item ? true : false;
                 if (this.maxQtyReached) {
                     this.select = 'warehouse';
