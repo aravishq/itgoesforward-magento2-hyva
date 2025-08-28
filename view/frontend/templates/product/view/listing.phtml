@@ -33,6 +33,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                        value="igf"
                        x-model="select"
                        class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
+                       @change="toggleDiscountedPrice()"
                 >
                 <label
                     for="default-radio-2"
@@ -99,6 +100,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                        name="igf"
                        value="warehouse"
                        x-model="select"
+                       @change="toggleDiscountedPrice()"
                        class="w-4 h-4 text-blue-600 bg-gray-100 checked:outline-none focus:ring-transparent cursor-pointer"
                 >
                 <label for="default-radio-1" class="ml-2 font-normal text-gray-600">
@@ -122,9 +124,15 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
             listings: [],
             attributeData: null,
             select: null,
+            finalPrice: null,
             maxQtyReached: null,
             preSelectId: new URLSearchParams(location.search).get('id'),
             preSelectLabel: new URLSearchParams(location.search).get('size'),
+            init() {
+                window.addEventListener('update-product-final-price', (e) => {
+                    this.finalPrice = e.detail ? e.detail : null;
+                });
+            },
             listCart(data) {
                 if (data.cart.items) {
                     this.cartItems = data.cart.items;
@@ -133,6 +141,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
             checkIGFProducts(data) {
                 this.selectedListing = false;
                 this.select = null;
+                this.toggleDiscountedPrice();
 
                 this.$nextTick(() => {
                     this.setItGoesForwardLabel();
@@ -259,8 +268,8 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                 }
             },
             toggleDiscountedPrice() {
-                const priceWrapper = document.querySelector('.product-info-main .price-wrapper');
-                const priceElement = document.querySelector('.product-info-main .price-wrapper .price')
+                const priceWrapper = document.querySelector('.product-info-main .final-price .price-wrapper');
+                const priceElement = document.querySelector('.product-info-main .final-price .price-wrapper .price')
 
                 if (this.select === 'igf') {
                     if (priceWrapper && priceElement && this.selectedListing.discountPercentage > 0) {
@@ -269,7 +278,7 @@ $configValue = $this->helper('Aravis\ItGoesForwardHyva\Helper\Data')->getConfig(
                         const newPrice = document.createElement("SPAN");
                         newPrice.id = "new-price";
 
-                        const newPriceFormatted = hyva.formatPrice(this.selectedListing.originalPrice - this.selectedListing.discountValue);
+                        const newPriceFormatted = hyva.formatPrice(this.finalPrice - this.selectedListing.discountValue);
                         newPrice.innerHTML = '<span class="ml-2 font-bold">' + newPriceFormatted + '</span>' +
                             '<span class="text-igf-green ml-2">' + this.selectedListing.discountPercentage +
                             '% off</span>';
